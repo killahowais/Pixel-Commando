@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class _PlayerMovement : MonoBehaviour
 
     private bool _moveLeft = false; 
     private bool _moveRight = false;
-    private bool _isGrounded = true;
+    private bool _isGrounded = false;
     private bool _jump = false;
 
     private void Update()
@@ -27,7 +28,24 @@ public class _PlayerMovement : MonoBehaviour
         {
             Player.transform.Translate(Vector2.right * _moveSpeed * Time.deltaTime);
         }
-       
+        Debug.Log(_isGrounded);
+        Debug.DrawRay(Player.transform.position, Vector2.down * 0.6f, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(Player.transform.position, Vector2.down, 2f);
+        if (hit.collider != null) //&& hit.collider.CompareTag("Ground")) //&& hit.collider.CompareTag("Ground"))
+        {
+            if (hit.collider.CompareTag("Ground"))
+            {
+
+                Debug.Log("Player is on the ground");
+                _isGrounded = true;
+            }
+        }
+        else
+        {
+            _isGrounded = false;
+        }
+
+
     }
     // fixedupdate used for consistent output not dependent on fps
     private void FixedUpdate()
@@ -39,12 +57,21 @@ public class _PlayerMovement : MonoBehaviour
         }
     }
     // checking if player is on the ground 
-    public void GroundCheck() 
-    {
-     RaycastHit hit;
-     // if(Physics.Raycast(Player.transform.)
+    //private void GroundCheck() 
+    //{
+    //    // Cast a ray downwards to check if the player is on the ground
+    //    RaycastHit2D hit = Physics2D.Raycast(Player.transform.position, Vector2.down, 2f);
 
-    }
+    //    // Check if the ray hit something and if the hit object has the "Ground" tag
+    //    if (hit.collider != null && hit.collider.CompareTag("Ground"))
+    //    {
+    //        Debug.Log("Player is on the ground");
+    //        return true;
+    //    }
+
+    //    // If no ground detected, return false
+    //    return false;
+    //}
 
     // Jump
     public void Jump() 
