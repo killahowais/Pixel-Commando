@@ -27,15 +27,23 @@ public class _PlayerMovement : MonoBehaviour
         {
             Player.transform.Translate(Vector2.right * _moveSpeed * Time.deltaTime);
         }
+       
     }
     // fixedupdate used for consistent output not dependent on fps
     private void FixedUpdate()
     {
-        if (_jump)
+        if (_jump && _isGrounded)
         {
             Player.AddForce(transform.up * _jumpingPower, ForceMode2D.Impulse);
             _jump = false;
         }
+    }
+    // checking if player is on the ground 
+    public void GroundCheck() 
+    {
+     RaycastHit hit;
+     // if(Physics.Raycast(Player.transform.)
+
     }
 
     // Jump
