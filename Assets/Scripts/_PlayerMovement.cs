@@ -13,8 +13,10 @@ public class _PlayerMovement : MonoBehaviour
 
     private bool _moveLeft = false; 
     private bool _moveRight = false;
-    private bool _isGrounded = false;
-    private bool _jump = false;
+    [SerializeField] private bool _isGrounded = false;
+    [SerializeField] private bool _jump = false;
+
+    
 
     private void Update()
     {
@@ -28,55 +30,41 @@ public class _PlayerMovement : MonoBehaviour
         {
             Player.transform.Translate(Vector2.right * _moveSpeed * Time.deltaTime);
         }
-        Debug.Log(_isGrounded);
-        Debug.DrawRay(Player.transform.position, Vector2.down * 0.6f, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(Player.transform.position, Vector2.down, 2f);
-        if (hit.collider != null) //&& hit.collider.CompareTag("Ground")) //&& hit.collider.CompareTag("Ground"))
-        {
-            if (hit.collider.CompareTag("Ground"))
-            {
+    }
 
-                Debug.Log("Player is on the ground");
+    // fixedupdate used for consistent output not dependent on fps a
+    // jump
+    private void FixedUpdate()
+    {
+        if (_jump &&_isGrounded)
+        {
+            Player.AddForce(new Vector2(Player.velocity.x, _jumpingPower * 10));
+
+            _jump = false;
+            _isGrounded = false;
+        }
+    }
+
+    //checking if player is on the ground
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Ground"))
+        {
+            // Checking if objects are not rotated 
+            Vector3 normal = other.GetContact(0).normal;
+            if (normal == Vector3.up)
+            {
                 _isGrounded = true;
             }
         }
-        else
+    }
+    // leaving the collider
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.collider.CompareTag("Ground"))
         {
             _isGrounded = false;
         }
-
-
-    }
-    // fixedupdate used for consistent output not dependent on fps
-    private void FixedUpdate()
-    {
-        if (_jump && _isGrounded)
-        {
-            Player.AddForce(transform.up * _jumpingPower, ForceMode2D.Impulse);
-            _jump = false;
-        }
-    }
-    // checking if player is on the ground 
-    //private void GroundCheck() 
-    //{
-    //    // Cast a ray downwards to check if the player is on the ground
-    //    RaycastHit2D hit = Physics2D.Raycast(Player.transform.position, Vector2.down, 2f);
-
-    //    // Check if the ray hit something and if the hit object has the "Ground" tag
-    //    if (hit.collider != null && hit.collider.CompareTag("Ground"))
-    //    {
-    //        Debug.Log("Player is on the ground");
-    //        return true;
-    //    }
-
-    //    // If no ground detected, return false
-    //    return false;
-    //}
-
-    // Jump
-    public void Jump() 
-    {
-      _jump = true;
     }
 
     // trigger for start moving right
@@ -99,4 +87,9 @@ public class _PlayerMovement : MonoBehaviour
     {
         _moveLeft = false;
     }
+    public void Jump()
+    {
+        _jump = true;
+    }
+
 }
