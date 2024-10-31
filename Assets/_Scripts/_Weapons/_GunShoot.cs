@@ -16,29 +16,33 @@ public class _GunShoot : MonoBehaviour
     // gun data
     [SerializeField] _GunData _gunData;
     [SerializeField] Transform _shootPos;
- 
+
+    private float damageAmount;
     public void Update()
     {
-
+        
     }
 
     public void Shoot()
     {
-        RaycastHit2D hit;
-        hit = Physics2D.Raycast(_shootPos.position, _shootPos.right);
+        RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
+        Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
 
-        if (hit.collider)
+       
+        if (hit.collider != null)
         {
-            IDamageable damageable = hit.collider.GetComponent(typeof(IDamageable)) as IDamageable;
+            Debug.Log("geraakt");
+            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 Debug.Log("Hit an object that implements IDamageable");
+                damageable.Damage(damageAmount); // Breng schade toe aan het object
             }
         }
-
-
-
-        Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
-        Debug.Log("Shooting");
+        else
+        {
+            Debug.Log("Niets geraakt");
+        }
+        Debug.Log(hit.collider.name);
     }
 }
