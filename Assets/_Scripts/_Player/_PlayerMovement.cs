@@ -11,12 +11,12 @@ public class _PlayerMovement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _jumpingPower;
 
-    private bool _moveLeft = false; 
-    private bool _moveRight = false;
+    public bool _moveLeft = false; 
+    public bool _moveRight = false;
     [SerializeField] private bool _isGrounded = false;
     [SerializeField] private bool _jump = false;
+    [SerializeField] bool _facingRight;
 
-    
 
     private void Update()
     {
@@ -24,13 +24,24 @@ public class _PlayerMovement : MonoBehaviour
         if (_moveLeft)
         {
             Player.transform.Translate(Vector2.left * _moveSpeed * Time.deltaTime);
+            if (_facingRight) 
+            {
+                Flip();
+            }
+            _facingRight = false;
         }
         // move right
         if (_moveRight)
         {
-            Player.transform.Translate(Vector2.right * _moveSpeed * Time.deltaTime);
+            Player.transform.Translate(Vector2.left * _moveSpeed * Time.deltaTime);
+            if (!_facingRight)  
+            {
+                Flip();
+            }
+            _facingRight = true;
         }
     }
+
 
     // fixedupdate used for consistent output not dependent on fps a
     // jump
@@ -90,6 +101,13 @@ public class _PlayerMovement : MonoBehaviour
     public void Jump()
     {
         _jump = true;
+    }
+
+    // flipping the direction of the player 
+    public void Flip()
+    {
+        _facingRight = !_facingRight; 
+        transform.Rotate(0f, 180f, 0f);
     }
 
 }

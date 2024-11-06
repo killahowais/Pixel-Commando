@@ -208,11 +208,11 @@ Transform:
   m_GameObject: {fileID: 7775794}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.36, y: -0.18, z: -10.038881}
+  m_LocalPosition: {x: 0.36, y: 3.34, z: -10.038881}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1368762058}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &20084699
 GameObject:
@@ -777,8 +777,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 924c7331253c9e746a408c48870bc1cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerMovement: {fileID: 1368762061}
   _gunData: {fileID: 11400000, guid: 3a620551928d5304a8301064e43ff735, type: 2}
   _shootPos: {fileID: 993490043}
+  _gunSprite: {fileID: 1073266201}
 --- !u!1 &1205295047
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,7 +904,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7775797}
   - {fileID: 1073266202}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -993,8 +994,11 @@ MonoBehaviour:
   Player: {fileID: 1368762059}
   _moveSpeed: 10
   _jumpingPower: 20
+  _moveLeft: 0
+  _moveRight: 0
   _isGrounded: 0
   _jump: 0
+  _facingRight: 0
 --- !u!1 &1386868670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1636,3 +1640,4 @@ SceneRoots:
   - {fileID: 1368762058}
   - {fileID: 1399539691}
   - {fileID: 1413354469}
+  - {fileID: 7775797}
