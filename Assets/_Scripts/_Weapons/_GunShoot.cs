@@ -13,22 +13,31 @@ public interface IDamageable
 
 public class _GunShoot : MonoBehaviour
 {
-    //player data 
-   [SerializeField] _PlayerMovement _playerMovement;
-    
     // gun data
     [SerializeField] _GunData _gunData;
     [SerializeField] Transform _shootPos;
     [SerializeField] SpriteRenderer _gunSprite;
 
+    [SerializeField] float _shootCoolDown;
+
     private float damageAmount;
 
     public void Update()
     {
+        // cool of for shooting
+        _shootCoolDown = _shootCoolDown-Time.deltaTime;
+        if (_shootCoolDown < 0)
+        {
+            _shootCoolDown = 0;
+        }
+
 
     }
         public void Shoot()
         {
+        if (_shootCoolDown == 0)
+        {
+            _shootCoolDown = +0.2f;
             RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
             Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
 
@@ -46,4 +55,5 @@ public class _GunShoot : MonoBehaviour
             }
             Debug.Log(hit.collider.name);
         }
+       }
  }
