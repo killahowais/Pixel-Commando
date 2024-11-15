@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9004dee0d63044428e8bce19954f4e6, type: 3}
   m_Name: Minigun
   m_EditorClassIdentifier: 
-  _gunName: 
+  _gunName: MiniGun
   _currentAmmo: 0
   _maxAmmo: 120
   _damage: 1
-  _fireRate: 0
+  _shootCoolDown: 0.001
   _reloadTime: 5
+  _shootingRange: 15

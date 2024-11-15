@@ -9,7 +9,7 @@ public class _GunData : ScriptableObject
     public int _currentAmmo;
     public int _maxAmmo;
     public int _damage;
-    public float _fireRate;
+    public float _shootCoolDown;
     public float _reloadTime;
     public float _shootingRange = 15f;
     
