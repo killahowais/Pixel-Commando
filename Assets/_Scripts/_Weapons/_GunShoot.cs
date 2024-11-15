@@ -30,39 +30,10 @@ public class _GunShoot : MonoBehaviour
     [SerializeField] private float ReloadTime;
     [SerializeField] private float ShootingRange = 15f;
 
-    private void Start()
-    {
-       SetGunData(_ak47);   
-    }
-
-    // switch from gun data 
-    //public void SetGunData(_GunData newGunData)
-    //{
-    //    _currentGunData = newGunData;
-
-    //    GunName = _currentGunData._gunName;
-    //    CurrentAmmo = _currentGunData._currentAmmo;
-    //    MaxAmmo = _currentGunData._maxAmmo;
-    //    Damage = _currentGunData._damage;
-    //    ShootCoolDown = _currentGunData._shootCoolDown;
-    //    ReloadTime = _currentGunData._reloadTime;
-    //    ShootingRange = _currentGunData._shootingRange;
-
-
-    //    //_currentGunData._gunName = GunName ;
-    //    //_currentGunData._shootCoolDown = ShootCoolDown ;
-    //    //_currentGunData._shootingRange = ShootingRange ;
-    //    //_currentGunData._currentAmmo = CurrentAmmo ;
-    //    //_currentGunData._maxAmmo = MaxAmmo ;
-    //    //_currentGunData._damage = Damage ;    
-    //    //_currentGunData._reloadTime = ReloadTime ;  
-
-    //}
-
     public void Update()
     {
         // cool of for shooting
-        ShootCoolDown = ShootCoolDown -Time.deltaTime;
+        ShootCoolDown = ShootCoolDown - Time.deltaTime;
         if (ShootCoolDown < 0)
         {
             ShootCoolDown = 0;
@@ -71,28 +42,9 @@ public class _GunShoot : MonoBehaviour
 
     }
 
-    IEnumerator SetGunData(_GunData newGunData)
-    {
-        _currentGunData = newGunData;
-
-        GunName = _currentGunData._gunName;
-        CurrentAmmo = _currentGunData._currentAmmo;
-        MaxAmmo = _currentGunData._maxAmmo;
-        Damage = _currentGunData._damage;
-        ShootCoolDown = _currentGunData._shootCoolDown;
-        ReloadTime = _currentGunData._reloadTime;
-        ShootingRange = _currentGunData._shootingRange;
-
-        CurrentAmmo= MaxAmmo;
-
-
-        return null;
-    }
-
-
     public void Shoot()
-        {
-        if (CurrentAmmo!= 0 && ShootCoolDown == 0)
+    {
+        if (CurrentAmmo != 0 && ShootCoolDown == 0)
         {
             ShootCoolDown = +0.2f;
             RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
@@ -103,14 +55,52 @@ public class _GunShoot : MonoBehaviour
                 IDamageable damageable = hit.collider.GetComponent<IDamageable>();
                 if (damageable != null)
                 {
-                    damageable.Damage(Damage); // Breng schade toe aan het object
+                    damageable.Damage(Damage); // Damage the object 
                 }
             }
             else
             {
                 Debug.Log("Niets geraakt");
             }
-            
+
         }
-       }
- }
+    }
+
+    IEnumerator Reload()
+    {
+
+        return null;
+    }
+
+
+    // setting the different type of gun 
+     IEnumerator SetGunData(_GunData newGunData)
+    {
+        _currentGunData = newGunData;
+
+        GunName = _currentGunData._gunName;
+        CurrentAmmo = _currentGunData._currentAmmo;
+        MaxAmmo = _currentGunData._maxAmmo;
+        Damage = _currentGunData._damage;
+        ShootCoolDown = _currentGunData._shootCoolDown;
+        ReloadTime = _currentGunData._reloadTime;
+        ShootingRange = _currentGunData._shootingRange;
+        
+        return null;
+    }
+
+
+    public void SwitctToPistol()
+    {
+      SetGunData(_pistol);
+    }
+
+    public void SwitctToAK47()
+    {
+      SetGunData(_ak47);
+    }
+    public void SwitctToMiniGun()
+    {
+      SetGunData(_miniGun);
+    }
+}

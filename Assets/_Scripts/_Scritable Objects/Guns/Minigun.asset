@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Minigun
   m_EditorClassIdentifier: 
   _gunName: MiniGun
-  _currentAmmo: 0
+  _currentAmmo: 120
   _maxAmmo: 120
   _damage: 1
   _shootCoolDown: 0.001

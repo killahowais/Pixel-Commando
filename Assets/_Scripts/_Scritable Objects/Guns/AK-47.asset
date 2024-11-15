@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AK-47
   m_EditorClassIdentifier: 
   _gunName: AK-47
-  _currentAmmo: 0
+  _currentAmmo: 30
   _maxAmmo: 30
   _damage: 2
   _shootCoolDown: 0.2
