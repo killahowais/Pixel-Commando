@@ -29,6 +29,10 @@ public class _GunShoot : MonoBehaviour
     [SerializeField] private float ShootCoolDown;
     [SerializeField] private float ReloadTime;
     [SerializeField] private float ShootingRange = 15f;
+    [SerializeField] private bool IsAutomatic;
+
+
+    [SerializeField] private bool _isShooting = false;
 
     public void Update()
     {
@@ -40,6 +44,13 @@ public class _GunShoot : MonoBehaviour
         }
         // Debug.Log(CurrentAmmo);
 
+    }
+    public void StartShooting()
+    {
+      if (IsAutomatic)
+      {
+            Shoot();
+      }
     }
 
     public void Shoot()
@@ -66,15 +77,8 @@ public class _GunShoot : MonoBehaviour
         }
     }
 
-    IEnumerator Reload()
-    {
-
-        return null;
-    }
-
-
     // setting the different type of gun 
-     IEnumerator SetGunData(_GunData newGunData)
+    IEnumerator SetGunData(_GunData newGunData)
     {
         _currentGunData = newGunData;
 
@@ -85,21 +89,37 @@ public class _GunShoot : MonoBehaviour
         ShootCoolDown = _currentGunData._shootCoolDown;
         ReloadTime = _currentGunData._reloadTime;
         ShootingRange = _currentGunData._shootingRange;
-        
+        IsAutomatic = _currentGunData._isAutomatic;
+
         return null;
     }
 
+    // reload data
+    IEnumerator ReloadGun()
+    {
+        if (CurrentAmmo!=MaxAmmo)
+        {
+            ShootCoolDown += ReloadTime;
+            CurrentAmmo = MaxAmmo;
+        }
+        return null;
+    }
 
-    public void SwitctToPistol()
+    public void Reload() 
+    {
+        StartCoroutine(ReloadGun());
+    }
+    
+    public void SwitchToPistol()
     {
       SetGunData(_pistol);
     }
 
-    public void SwitctToAK47()
+    public void SwitchToAK47()
     {
       SetGunData(_ak47);
     }
-    public void SwitctToMiniGun()
+    public void SwitchToMiniGun()
     {
       SetGunData(_miniGun);
     }
