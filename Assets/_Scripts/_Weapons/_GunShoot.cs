@@ -10,7 +10,6 @@ public interface IDamageable
 
     }
 }
-
 public class _GunShoot : MonoBehaviour
 {
     // Guns
@@ -77,33 +76,6 @@ public class _GunShoot : MonoBehaviour
         yield return null;
     }
         
-    
-
-    //public void Shoot()
-    //{
-    //    if (CurrentAmmo != 0 && ShootCoolDown == 0)
-    //    {
-    //        ShootCoolDown = +0.2f;
-    //        RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
-    //        Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
-    //        CurrentAmmo--;
-    //        if (hit.collider != null)
-    //        {
-    //            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-    //            if (damageable != null)
-    //            {
-    //                damageable.Damage(Damage); // Damage the object 
-    //            }
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("Niets geraakt");
-    //        }
-
-    //    }
-    //}
-
-    // setting the different type of gun 
     IEnumerator SetGunData(_GunData newGunData)
     {
         _currentGunData = newGunData;
@@ -139,16 +111,20 @@ public class _GunShoot : MonoBehaviour
     }
     
     public void SwitchToPistol()
-    {     
+    {
+        _currentGunData._currentAmmo = CurrentAmmo;
         StartCoroutine(SetGunData(_pistol));
     }
 
     public void SwitchToAK47()
     {
+        _currentGunData._currentAmmo = CurrentAmmo;
         StartCoroutine(SetGunData(_ak47));
+        
     }
     public void SwitchToMiniGun()
     {
+        _currentGunData._currentAmmo = CurrentAmmo;
         StartCoroutine(SetGunData(_miniGun));
     }
 }
