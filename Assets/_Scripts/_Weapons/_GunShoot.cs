@@ -12,23 +12,25 @@ public interface IDamageable
 }
 public class _GunShoot : MonoBehaviour
 {
+    public string GunName;
+    public int CurrentAmmo;
+    public int MaxAmmo;
+    public int Damage;
+    public float ShootCoolDown;
+    public float ReloadTime;
+    public float ShootingRange = 15f;
 
-    [SerializeField] private string GunName;
-    [SerializeField] private int CurrentAmmo;
-    [SerializeField] private int MaxAmmo;
-    [SerializeField] private int Damage;
-    [SerializeField] private float ShootCoolDown;
-    [SerializeField] private float ReloadTime;
-    [SerializeField] private float ShootingRange = 15f;
 
+    private bool _isShooting = false;
+    private bool _isReloading = false;
+    private bool _isShootingCoroutineRunning = false;
+    [SerializeField] Transform _shootPos;
+    [SerializeField] SpriteRenderer _gunSprite;
 
-    [SerializeField] private bool _isShooting = false;
-    [SerializeField] private bool _isReloading = false;
-  
     public void StartShooting()
     {
         _isShooting = true;
-        if (_isShooting)
+        if (!_isShootingCoroutineRunning)
         {
             StartCoroutine(Shoot());
         }
@@ -40,7 +42,7 @@ public class _GunShoot : MonoBehaviour
 
     IEnumerator Shoot() 
     {
-
+        _isShootingCoroutineRunning = true;
         while (_isShooting)
         {
             if (CurrentAmmo != 0 && !_isReloading)
@@ -64,24 +66,10 @@ public class _GunShoot : MonoBehaviour
             }
             yield return new WaitForSeconds(ShootCoolDown);
         }
+        _isShootingCoroutineRunning = false;
         yield return null;
     }
         
-    IEnumerator SetGunData(_GunData newGunData)
-    {
-        _currentGunData = newGunData;
-
-        GunName = _currentGunData._gunName;
-        CurrentAmmo = _currentGunData._currentAmmo;
-        MaxAmmo = _currentGunData._maxAmmo;
-        Damage = _currentGunData._damage;
-        ShootCoolDown = _currentGunData._shootCoolDown;
-        ReloadTime = _currentGunData._reloadTime;
-        ShootingRange = _currentGunData._shootingRange;
-        IsAutomatic = _currentGunData._isAutomatic;
-
-       yield return null;
-    }
 
     // reload data
     IEnumerator ReloadGun()
@@ -99,23 +87,5 @@ public class _GunShoot : MonoBehaviour
     public void Reload() 
     {
         StartCoroutine(ReloadGun());
-    }
-    
-    public void SwitchToPistol()
-    {
-        _currentGunData._currentAmmo = CurrentAmmo;
-        StartCoroutine(SetGunData(_pistol));
-    }
-
-    public void SwitchToAK47()
-    {
-        _currentGunData._currentAmmo = CurrentAmmo;
-        StartCoroutine(SetGunData(_ak47));
-        
-    }
-    public void SwitchToMiniGun()
-    {
-        _currentGunData._currentAmmo = CurrentAmmo;
-        StartCoroutine(SetGunData(_miniGun));
     }
 }

@@ -8,17 +8,14 @@ public class _GunSwitching : MonoBehaviour
     [SerializeField] _GunData _ak47;
     [SerializeField] _GunData _pistol;
     [SerializeField] _GunData _miniGun;
-    [SerializeField] _GunData _currentGunData;
-
-    [SerializeField] Transform _shootPos;
-    [SerializeField] SpriteRenderer _gunSprite;
 
     private _GunData _currentGunData;
 
+    [SerializeField] private _GunShoot _gunShoot;
 
     void Start()
     {
-        SwitchToPistol();  // Default to AK47 at the start
+        StartCoroutine(SetGunData(_pistol));
     }
 
 
@@ -27,14 +24,13 @@ public class _GunSwitching : MonoBehaviour
     {
         _currentGunData = newGunData;
 
-        GunName = _currentGunData._gunName;
-        CurrentAmmo = _currentGunData._currentAmmo;
-        MaxAmmo = _currentGunData._maxAmmo;
-        Damage = _currentGunData._damage;
-        ShootCoolDown = _currentGunData._shootCoolDown;
-        ReloadTime = _currentGunData._reloadTime;
-        ShootingRange = _currentGunData._shootingRange;
-        IsAutomatic = _currentGunData._isAutomatic;
+        _gunShoot.GunName = _currentGunData._gunName;
+        _gunShoot.CurrentAmmo = _currentGunData._currentAmmo;
+        _gunShoot.MaxAmmo = _currentGunData._maxAmmo;
+        _gunShoot.Damage = _currentGunData._damage;
+        _gunShoot.ShootCoolDown = _currentGunData._shootCoolDown;
+        _gunShoot.ReloadTime = _currentGunData._reloadTime;
+        _gunShoot.ShootingRange = _currentGunData._shootingRange;
 
         yield return null;
     }
@@ -42,19 +38,19 @@ public class _GunSwitching : MonoBehaviour
 
     public void SwitchToPistol()
     {
-        _currentGunData._currentAmmo = CurrentAmmo;
+        _currentGunData._currentAmmo = _gunShoot.CurrentAmmo;
         StartCoroutine(SetGunData(_pistol));
     }
 
     public void SwitchToAK47()
     {
-        _currentGunData._currentAmmo = CurrentAmmo;
+        _currentGunData._currentAmmo = _gunShoot.CurrentAmmo;
         StartCoroutine(SetGunData(_ak47));
 
     }
     public void SwitchToMiniGun()
     {
-        _currentGunData._currentAmmo = CurrentAmmo;
+        _currentGunData._currentAmmo = _gunShoot.CurrentAmmo;
         StartCoroutine(SetGunData(_miniGun));
     }
 }
