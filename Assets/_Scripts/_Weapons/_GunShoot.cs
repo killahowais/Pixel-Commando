@@ -33,49 +33,75 @@ public class _GunShoot : MonoBehaviour
 
 
     [SerializeField] private bool _isShooting = false;
-
-    public void Update()
-    {
-        // cool of for shooting
-        ShootCoolDown = ShootCoolDown - Time.deltaTime;
-        if (ShootCoolDown < 0)
-        {
-            ShootCoolDown = 0;
-        }
-        // Debug.Log(CurrentAmmo);
-
-    }
+    [SerializeField] private bool _isReloading = false;
+  
     public void StartShooting()
     {
-      if (IsAutomatic)
-      {
-            Shoot();
-      }
-    }
-
-    public void Shoot()
-    {
-        if (CurrentAmmo != 0 && ShootCoolDown == 0)
+        _isShooting = true;
+        if (_isShooting)
         {
-            ShootCoolDown = +0.2f;
-            RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
-            Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
-            CurrentAmmo--;
-            if (hit.collider != null)
-            {
-                IDamageable damageable = hit.collider.GetComponent<IDamageable>();
-                if (damageable != null)
-                {
-                    damageable.Damage(Damage); // Damage the object 
-                }
-            }
-            else
-            {
-                Debug.Log("Niets geraakt");
-            }
-
+            StartCoroutine(Shoot());
         }
     }
+    public void StopShooting() 
+    {
+      _isShooting =false;
+    }
+
+    IEnumerator Shoot() 
+    {
+
+        while (_isShooting)
+        {
+            if (CurrentAmmo != 0 && !_isReloading)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
+                Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
+                CurrentAmmo--;
+                if (hit.collider != null)
+                {
+                    IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.Damage(Damage); // Damage the object 
+                    }
+                }
+                else
+                {
+                    Debug.Log("Niets geraakt");
+                }
+
+            }
+            yield return new WaitForSeconds(ShootCoolDown);
+        }
+        yield return null;
+    }
+        
+    
+
+    //public void Shoot()
+    //{
+    //    if (CurrentAmmo != 0 && ShootCoolDown == 0)
+    //    {
+    //        ShootCoolDown = +0.2f;
+    //        RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
+    //        Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
+    //        CurrentAmmo--;
+    //        if (hit.collider != null)
+    //        {
+    //            IDamageable damageable = hit.collider.GetComponent<IDamageable>();
+    //            if (damageable != null)
+    //            {
+    //                damageable.Damage(Damage); // Damage the object 
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Niets geraakt");
+    //        }
+
+    //    }
+    //}
 
     // setting the different type of gun 
     IEnumerator SetGunData(_GunData newGunData)
@@ -91,7 +117,7 @@ public class _GunShoot : MonoBehaviour
         ShootingRange = _currentGunData._shootingRange;
         IsAutomatic = _currentGunData._isAutomatic;
 
-        return null;
+       yield return null;
     }
 
     // reload data
@@ -99,10 +125,12 @@ public class _GunShoot : MonoBehaviour
     {
         if (CurrentAmmo!=MaxAmmo)
         {
-            ShootCoolDown += ReloadTime;
+            _isReloading = true;
+            yield return new WaitForSeconds(ReloadTime);
             CurrentAmmo = MaxAmmo;
+            _isReloading = false;
         }
-        return null;
+        yield return null;
     }
 
     public void Reload() 
@@ -111,16 +139,16 @@ public class _GunShoot : MonoBehaviour
     }
     
     public void SwitchToPistol()
-    {
-      SetGunData(_pistol);
+    {     
+        StartCoroutine(SetGunData(_pistol));
     }
 
     public void SwitchToAK47()
     {
-      SetGunData(_ak47);
+        StartCoroutine(SetGunData(_ak47));
     }
     public void SwitchToMiniGun()
     {
-      SetGunData(_miniGun);
+        StartCoroutine(SetGunData(_miniGun));
     }
 }

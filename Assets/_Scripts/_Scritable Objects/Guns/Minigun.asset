@@ -16,6 +16,7 @@ MonoBehaviour:
   _currentAmmo: 120
   _maxAmmo: 120
   _damage: 1
-  _shootCoolDown: 0.001
+  _shootCoolDown: 0.01
   _reloadTime: 5
   _shootingRange: 15
+  _isAutomatic: 0

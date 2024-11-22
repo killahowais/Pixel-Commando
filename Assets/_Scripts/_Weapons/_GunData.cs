@@ -13,7 +13,6 @@ public class _GunData : ScriptableObject
     public float _reloadTime;
     public float _shootingRange = 15f;
     public bool _isAutomatic;
-    
 
 
 }
