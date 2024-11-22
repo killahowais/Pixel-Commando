@@ -12,14 +12,6 @@ public interface IDamageable
 }
 public class _GunShoot : MonoBehaviour
 {
-    // Guns
-    [SerializeField] _GunData _ak47;
-    [SerializeField] _GunData _pistol;
-    [SerializeField] _GunData _miniGun;
-    [SerializeField] _GunData _currentGunData;
-    // gun data
-    [SerializeField] Transform _shootPos;
-    [SerializeField] SpriteRenderer _gunSprite;
 
     [SerializeField] private string GunName;
     [SerializeField] private int CurrentAmmo;
@@ -28,7 +20,6 @@ public class _GunShoot : MonoBehaviour
     [SerializeField] private float ShootCoolDown;
     [SerializeField] private float ReloadTime;
     [SerializeField] private float ShootingRange = 15f;
-    [SerializeField] private bool IsAutomatic;
 
 
     [SerializeField] private bool _isShooting = false;
