@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public interface IDamageable
 {
     public void Damage(float damageAmount) 
@@ -10,8 +9,12 @@ public interface IDamageable
 
     }
 }
-public class _GunShoot : MonoBehaviour
+public class GunShoot : MonoBehaviour
 {
+    // Scripts 
+    [SerializeField] private Animations Animations;
+
+    // Data
     public string GunName;
     public int CurrentAmmo;
     public int MaxAmmo;
@@ -27,6 +30,17 @@ public class _GunShoot : MonoBehaviour
     [SerializeField] Transform _shootPos;
     [SerializeField] SpriteRenderer _gunSprite;
 
+
+
+    //private void Update()
+    //{
+    //    if (_isShootingCoroutineRunning)
+    //    {
+    //        Animations.IdleAnimation();
+    //    }
+    //}
+
+    // update for the button to call this coroutine
     public void StartShooting()
     {
         _isShooting = true;
@@ -35,11 +49,14 @@ public class _GunShoot : MonoBehaviour
             StartCoroutine(Shoot());
         }
     }
+    // stop shooting
     public void StopShooting() 
     {
-      _isShooting =false;
+        _isShooting = false;
+        Animations.IdleAnimation();
     }
 
+    // shoot logic
     IEnumerator Shoot() 
     {
         _isShootingCoroutineRunning = true;
@@ -50,6 +67,7 @@ public class _GunShoot : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Raycast(_shootPos.position, _shootPos.right, 15f);
                 Debug.DrawRay(_shootPos.position, _shootPos.right * 15, Color.magenta);
                 CurrentAmmo--;
+                Animations.ShootAnimation(GunName);
                 if (hit.collider != null)
                 {
                     IDamageable damageable = hit.collider.GetComponent<IDamageable>();
@@ -66,6 +84,7 @@ public class _GunShoot : MonoBehaviour
             }
             yield return new WaitForSeconds(ShootCoolDown);
         }
+        Animations.IdleAnimation();
         _isShootingCoroutineRunning = false;
         yield return null;
     }
@@ -83,7 +102,7 @@ public class _GunShoot : MonoBehaviour
         }
         yield return null;
     }
-
+    // update for the button to call reload coroutine
     public void Reload() 
     {
         StartCoroutine(ReloadGun());

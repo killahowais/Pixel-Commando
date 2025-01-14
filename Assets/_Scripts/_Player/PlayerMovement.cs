@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class _PlayerMovement : MonoBehaviour
 {
+    // Scripts 
+    [SerializeField] private Animations Animations;
+
     [SerializeField] private Rigidbody2D Player;
 
     [SerializeField] private float _moveSpeed;
@@ -16,7 +19,6 @@ public class _PlayerMovement : MonoBehaviour
     [SerializeField] private bool _isGrounded = false;
     [SerializeField] private bool _jump = false;
     [SerializeField] bool _facingRight;
-
 
     private void Update()
     {
@@ -41,7 +43,6 @@ public class _PlayerMovement : MonoBehaviour
             _facingRight = true;
         }
     }
-
 
     // fixedupdate used for consistent output not dependent on fps a
     // jump
@@ -82,21 +83,25 @@ public class _PlayerMovement : MonoBehaviour
     public void MoveRight()
     {
         _moveRight = true;
+        Animations.RunAnimation();
     }
     // trigger for stop moving right
     public void StopMoveRight()
     {
         _moveRight = false;
+        Animations.IdleAnimation();
     }
     // trigger for start moving left 
     public void MoveLeft()
     {
         _moveLeft = true;
+        Animations.RunAnimation();
     }
     // trigger for stop moving left
     public void StopMoveLeft()
     {
         _moveLeft = false;
+        Animations.IdleAnimation();
     }
     public void Jump()
     {
